@@ -1,72 +1,81 @@
-# Insta-Triage (powered by Neural Nexus)
+# 📘 Insta-Triage (Powered by Neural Nexus)
+### **A Decentralized, Zero-Trust Emergency Grid for Golden Hour Response**
 
-**Tagline:** A Decentralized, Zero-Trust Emergency Grid
+---
 
-## 🚨 What is Insta-Triage
+## 🚨 Overview
 
-Insta-Triage is a proof-of-concept multi-agent emergency dispatch system designed to reduce “Golden Hour” delay by enabling secure, decentralized, and high-speed coordination between ambulances, hospitals, and routing agents.  
-It uses a multi-agent architecture built on top of the ZyndAI Agent SDK for identity, encrypted messaging & discovery — combined with LLM-powered parsing for rapid emergency request handling, routing/ETA calculations, and fallback support for legacy systems.
+**Insta-Triage** is a multi-agent emergency response system designed to cut Golden Hour delays from **minutes to milliseconds**.
 
-## 🎯 Features (Planned / Implemented)
+It uses:
 
-- Dispatcher agent that parses freeform dispatcher input into structured emergency requests (location, severity, patient info).  
-- Broadcast to multiple Hospital agents simultaneously (parallel swarm dispatch).  
-- Secure, cryptographically-verified identity (DID + credentials) for all agents.  
-- “First valid accept” winner-takes-all logic to assign hospital in minimal time.  
-- Timeout-based fallback to legacy/manual dispatch when no hospital agent responds.  
-- (Optional / Demo-mode) Routing & ETA estimation agent (simulated or real) to compute ambulance travel time.  
-- (Optional / Demo-mode) Ambulance / Responder agent to simulate dispatch, en-route status, arrival & handover.  
-- Logging & audit trail: request times, responses, acceptances, fallback usages, routing/ETA, status updates.  
-- (Future / Optional) UI (CLI or Web) to visualize dispatch flow, hospital assignment, ETA, status.  
+- **ZyndAI Agent SDK** → secure DID identity, encrypted MQTT messaging, and agent discovery  
+- **Cerebras LLM** → fast emergency text parsing & triage  
+- **Async Multi-Agent Architecture** → Dispatcher + Hospitals + Routing + Ambulance + Fallback  
+- **UI Dashboard** → Live logs, status timeline, triage output, routing & ETA  
 
-## 🛠️ Tech Stack
+This project showcases how isolated agents can become an **intelligent decentralized network** capable of real-time medical coordination.
 
-| Component | Technology / Framework |
-|----------|------------------------|
-| Agent infrastructure (identity, secure messaging) | ZyndAI Agent SDK (DID, credentialing, MQTT, agent discovery) |
-| LLM-based parsing & reasoning | Large-Language Model (e.g. via Cerebras inference layer) + LangChain / LangGraph for orchestration |
-| Asynchronous / concurrent execution | Python 3.10+, `asyncio` |
-| Inter-agent communication / pub-sub / messaging | MQTT (via Zynd SDK) |
-| Routing & ETA (demo / simulation) | Mock routing module / mapping API or stub logic |
-| Logging & state tracking | Python logging or lightweight DB / file-based logs |
-| (Optional) UI / Demo interface | CLI / Streamlit / Flask / simple web UI |
-| Configuration / Environment | `.env`, config files (e.g. hospital list, credentials), secure credential storage |
+---
 
-## 🚀 How to Set Up & Run (Dev / Demo Mode)
+## 🧠 Core Idea (The Pitch)
 
-1. Clone the repository  
-2. Install dependencies (e.g. `pip install -r requirements.txt`)  
-3. Add `.env` with necessary credentials and configuration (agent seeds, broker endpoints, LLM credentials if any)  
-4. Initialize agent identities (via Zynd SDK)  
-5. Start core agents: Dispatcher + one or more Hospital agents (and optionally Routing, Ambulance, Fallback)  
-6. (Optional) Start UI server for demo / monitoring  
-7. Use the Dispatcher interface (CLI or UI) to input emergency requests and observe dispatch flow, logs, and final assignment  
+Emergency dispatch today is **serial** and slow.
 
-*(Detailed step-by-step instructions to be filled once codebase structure is finalized.)*
+Insta-Triage introduces a **parallel swarm**:
 
-## 🧪 Demo Scenario & What It Shows
+1. Dispatcher enters messy shorthand:  
+   **“m 40 chest pain market rd”**
+2. Cerebras LLM parses it into structured JSON in 0.1s.
+3. Dispatcher broadcasts to 10+ Hospital Agents simultaneously.
+4. Hospital Agents cryptographically **verify Dispatcher DID** (Zynd SDK).
+5. First valid hospital to accept is automatically assigned.
+6. Routing Agent calculates **ETA**.
+7. Ambulance Agent simulates **en-route → arrival → handover**.
+8. If all fail → **Legacy Fallback** takes over.
 
-- Dispatch a sample emergency request (e.g. “m 40 cardiac Market Rd”) via Dispatcher  
-- Show parsing → structured JSON output  
-- Show broadcast to hospital agents → verify DID → accept by first hospital  
-- Show assignment & confirmation, routing/ETA (if implemented), and (if simulation) ambulance status flow  
-- Show fallback path if no hospital responds (after timeout)  
-- Provide logs / timestamps demonstrating dispatch → accept latency, decision flow, fallback or success  
+---
 
-## 👥 Team & Contribution Guidelines
+## 🔥 Why This Project Matters
 
-*(You can list team members and their responsibilities here — use this template to reflect your 3-person team distribution.)*
+- Proves **secure multi-agent collaboration** (Zynd SDK requirement).
+- Demonstrates **trust-based interoperability** (DID verification).
+- Shows **parallelized dispatch** reducing golden-hour delays.
+- Fully decentralized — no single central server required.
+- Highly demo-friendly for hackathons.
 
-## 📄 Limitations & Future Work
+---
 
-- This is a proof-of-concept: routing/ETA and ambulance-status are simulated (not real GPS / real ambulances)  
-- Credential issuance / DID verification currently assumes trusted setup (for demo only) — real-world deployment would need robust identity issuance & revocation.  
-- No medical triage logic or ambulance resource management implemented — only hospital availability is considered.  
-- System assumes network connectivity and relies on Zynd infrastructure / broker; network failures or broker issues may impact reliability.  
-- For real-world EMS use, many additional modules (real-time traffic, on-road ambulance tracking, hospital bed capacity, resource allocation, safety/ privacy, legal compliance) would be required.
+# 🧩 System Architecture (6 Agents)
 
-## 📚 References & Acknowledgments
+| Agent | Responsibility |
+|-------|----------------|
+| **1. Dispatcher Agent** | Parse input → broadcast → pick winner → trigger fallback |
+| **2. Hospital Agents (N)** | DID verify → accept/reject → update availability |
+| **3. Routing / ETA Agent** | Compute or simulate ETA & route |
+| **4. Ambulance Agent** | Simulate dispatch → en-route → arrival |
+| **5. Legacy Fallback Agent** | Trigger if no hospital responds |
+| **6. UI/Monitor Agent** | Show logs, ETA, triage, agent statuses |
 
-- Thanks to ZyndAI Agent SDK for decentralized identity & secure messaging foundation  
-- Inspired by multi-agent system design principles and emergency dispatch system requirements.  
-- (Add any research papers, libraries, or external resources used)  
+---
+
+# 🧰 Tech Stack
+
+### Core
+- Python 3.10+
+- **ZyndAI Agent SDK**
+- AsyncIO (parallel swarm dispatch)
+
+### LLM Layer
+- **Cerebras Inference API**
+- **LangChain / LangGraph**
+
+### UI / Demo
+- **Streamlit Dashboard**
+
+---
+
+# 🚀 End-to-End Project Flow
+
+### 1. Dispatcher Input
+User types:
